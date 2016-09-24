@@ -25,12 +25,11 @@ region_temp_annual <- unique_region_temp %>%
   ungroup()
 
 ###### 3) Plot the trends in temperature
-p <- region_temp_annual[c(seq(1,15080, length(unique(region_temp_annual$ECOREGION))),
-                    seq(1,15080, length(unique(region_temp_annual$ECOREGION)))+1),] %>%
-  gather(type, value, -Year, -ECOREGION) %>%
+p <- region_temp_annual %>%
+  gather(type, tempC, -Year, -ECOREGION) %>%
   group_by(ECOREGION, type) %>%
   do(plots = ggplot(data = .) + 
-    aes(x=Year, y=mean_tempC) + 
+    aes(x=Year, y=tempC) + 
     geom_line() + stat_smooth(method="lm") +
       ggtitle(.$ECOREGION[1])
   ) %>%
